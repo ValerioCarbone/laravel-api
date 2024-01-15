@@ -35,12 +35,17 @@ class ProjectController extends Controller
         $request->validate([
             'title' => 'required|max:255|string|unique:projects',
             'content' => 'nullable|min:5|string',
-            // 'category_id' => 'nullable|exists:categories,id',
-            // 'tags' => 'exists:tags,id'
+            'type_id' => 'nullable|exists:types,id',
+            'technologies' => 'exists:technologies,id'
         ]);
 
         $data = $request->all();
         $new_project = Project::create($data);
+
+        if ($request->has('technologies')) {
+            $new_project->tags()->attach($data['tags']);
+        }
+
         return redirect()->route('admin.projects.show', $new_project);
     }
 
@@ -68,12 +73,20 @@ class ProjectController extends Controller
         $request->validate([
             'title' => 'required|max:255|string|unique:projects',
             'content' => 'nullable|min:5|string',
-            // 'category_id' => 'nullable|exists:categories,id',
-            // 'tags' => 'exists:tags,id'
+            'type_id' => 'nullable|exists:types,id',
+            'technologies' => 'exists:technologies,id'
         ]);
 
         $data = $request->all();
         $project->update($data);
+
+        if ($request->has('technologies')) {
+            $project->technologies()->sync($data['technologies']);
+        } else {
+            // $project->technologies()->sync([]);
+            $project->technologies()->detach();
+        }
+
         return redirect()->route('admin.projects.show', $project);
     }
 
@@ -82,6 +95,7 @@ class ProjectController extends Controller
      */
     public function destroy(Project $project)
     {
+        $project->technologies()->sync([]);
         $project->delete();
 
         return redirect()->route('admin.projects.index');

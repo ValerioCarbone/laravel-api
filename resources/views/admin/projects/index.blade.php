@@ -9,10 +9,11 @@
                         <th scope="col">ID</th>
                         <th scope="col">Title</th>
                         <th scope="col">Content</th>
-                        <th>
-                            <a class="btn btn-primary " href="{{ route('admin.projects.create') }}">New</a>
-                        </th>
                         <th></th>
+                        <th>
+                            <a class="btn btn-primary btn-lg" href="{{ route('admin.projects.create') }}">New</a>
+                        </th>
+
 
                     </tr>
                 </thead>
