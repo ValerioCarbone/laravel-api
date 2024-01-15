@@ -14,11 +14,11 @@ class TypeSeeder extends Seeder
      */
     public function run(Faker $faker): void
     {
-        $projects = ['FrontEnd', 'BackEnd', 'FullStack', 'Design', 'DevOps'];
+        $types = ['FrontEnd', 'BackEnd', 'FullStack', 'Design', 'DevOps'];
 
-        for ($i = 0; $i < 100; $i++) {
+        foreach ($types as $type) {
             $new_type = new Type();
-            $new_type->name = $faker->randomElement($projects);
+            $new_type->name = $type;
 
             $new_type->save();
         }
