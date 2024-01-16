@@ -6,6 +6,7 @@ use App\Models\Admin\Type;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Faker\Generator as Faker;
+use Illuminate\Support\Str;
 
 class TypeSeeder extends Seeder
 {
@@ -19,7 +20,7 @@ class TypeSeeder extends Seeder
         foreach ($types as $type) {
             $new_type = new Type();
             $new_type->name = $type;
-
+            $new_type->slug = str::slug($new_type->name);
             $new_type->save();
         }
     }

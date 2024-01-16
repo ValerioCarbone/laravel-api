@@ -8,6 +8,7 @@ use App\Models\Admin\Type;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Faker\Generator as Faker;
+use Illuminate\Support\Str;
 
 class ProjectSeeder extends Seeder
 {
@@ -22,9 +23,11 @@ class ProjectSeeder extends Seeder
         $technologies = Technology::all();
         $technology_id = $technologies->pluck('id');
 
-        for ($i = 0; $i < 30; $i++) {
+        for ($i = 0; $i < 50; $i++) {
             $new_project = new Project();
+
             $new_project->title = $faker->sentence(5);
+            $new_project->slug = Str::slug($new_project->title, '-');
             $new_project->content = $faker->text(200);
             $new_project->type_id = $faker->randomElement($type_id);
 

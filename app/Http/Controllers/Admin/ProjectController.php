@@ -7,6 +7,8 @@ use App\Http\Requests\StoreProjectRequest;
 use App\Http\Requests\UpdateProjectRequest;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use illuminate\support\Str;
+use illuminate\validation\Rule;
 
 class ProjectController extends Controller
 {
@@ -40,10 +42,12 @@ class ProjectController extends Controller
         ]);
 
         $data = $request->all();
+        $data['slug'] = Str::slug($data['title'], '-');
+
         $new_project = Project::create($data);
 
         if ($request->has('technologies')) {
-            $new_project->tags()->attach($data['tags']);
+            $new_project->tags()->attach($data['technologies']);
         }
 
         return redirect()->route('admin.projects.show', $new_project);
@@ -71,13 +75,14 @@ class ProjectController extends Controller
     public function update(Request $request, Project $project)
     {
         $request->validate([
-            'title' => 'required|max:255|string|unique:projects',
+            'title' => ['required', 'max:255', 'string', Rule::unique('projects')->ignore($project->id)],
             'content' => 'nullable|min:5|string',
             'type_id' => 'nullable|exists:types,id',
             'technologies' => 'exists:technologies,id'
         ]);
 
         $data = $request->all();
+        $data['slug'] = Str::slug($data['title'], '-');
         $project->update($data);
 
         if ($request->has('technologies')) {
