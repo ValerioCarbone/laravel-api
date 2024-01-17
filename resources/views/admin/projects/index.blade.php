@@ -11,7 +11,7 @@
                         <th scope="col">Content</th>
                         <th></th>
                         <th>
-                            <a class="btn btn-primary btn-lg" href="{{ route('admin.projects.create') }}">New</a>
+                            <a class="btn btn-primary btn-lg" href="{{ route('admin.projects.create') }}">New project</a>
                         </th>
 
 
